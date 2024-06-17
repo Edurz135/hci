@@ -17,7 +17,7 @@ export default function Home() {
             />
           </div>
           <div className="md:w-1/2 text-center md:text-left">
-            <h1 className="text-4xl font-bold text-gray-800">Logo</h1>
+            <h1 className="font-bold text-gray-800">Logo</h1>
             <h2 className="text-5xl font-bold text-gray-800 mt-4">
               Experiencias Virtuales y Simulaciones
             </h2>
