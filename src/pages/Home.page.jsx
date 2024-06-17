@@ -43,7 +43,7 @@ export default function Home() {
         </div>
       </div>
 
-      <ProductList />
+      <ProductList asdf={true}/>
       <ProductList />
 
       <Footer/>
