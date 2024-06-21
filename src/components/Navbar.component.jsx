@@ -2,13 +2,14 @@ import * as React from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
+import Perfil from "./perfil/Perfil";
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: '#DFDFDF', // Cambiar a color de fondo deseado
+  backgroundColor: '#DFDFDF',
   '&:hover': {
-    backgroundColor: alpha('#DFDFDF', 0.85), // Opcional: cambiar el color de fondo al pasar el mouse
+    backgroundColor: alpha('#DFDFDF', 0.85),
   },
   marginLeft: 0,
   width: '100%',
@@ -33,7 +34,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   width: '100%',
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
     [theme.breakpoints.up('sm')]: {
@@ -45,6 +45,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 export default function Navbar() {
+  const [showPerfil, setShowPerfil] = React.useState(false);
   const carrito = [
     {
       id: 1,
@@ -75,20 +76,30 @@ export default function Navbar() {
       estado: "Pendiente"
     },
   ];
-
   const User =
   {
     id: 1,
-    nombre: "Pepe Grillo",
+    nombre: "Pepe",
+    apellido: "Grillo",
     correo: "pepegrillo@gmail.com",
     edad: "19",
     numTarjeta: "3093232123412231",
     foto: ""
   }
-
   //Caso: no se reconozca un token 
   // const User = false; 
+  const handlePerfilClick = (e) => {
+    e.preventDefault();
+    if (showPerfil) {
+      setShowPerfil(false);
+    } else {
+      setShowPerfil(true);
+    }
+  };
 
+  const handleClosePerfil = () => {
+    setShowPerfil(false);
+  };
   return (
     <nav className="bg-white shadow-lg">
       <div className="flex flex-row justify-between items-center p-4">
@@ -110,18 +121,23 @@ export default function Navbar() {
           <a href="/store" className="text-xl font-semibold text-black">
             Tienda
           </a>
-          <a href="/login" className="text-xl font-semibold text-black">
+          <div className="text-xl font-semibold text-black">
             {User ? (
               <>
-                <div className='flex flex-row  items-center space-x-2'>
-                  <img className="rounded-full" src={User.foto === "" ? "/default-perfil.png" : User.foto} />
-                  <p className='font-semibold'>{User.nombre}</p>
-                </div>
+                <a onClick={handlePerfilClick} className="cursor-pointer">
+                  <div className='flex flex-row items-center space-x-2'>
+                    <img className="rounded-full w-16" src={User.foto === "" ? "/default-perfil.png" : User.foto} alt="User profile" />
+                    <p className='font-semibold'>{User.nombre} {User.apellido}</p>
+                  </div>
+                </a>
+                {showPerfil && <Perfil User={User} onClose={handleClosePerfil} />}
               </>
             ) : (
-              "Identificarse"
+              <a href="/login" className="text-xl font-semibold text-black">
+                Identificarse
+              </a>
             )}
-          </a>
+          </div>
           <a href="/carrito">
             <div className='relative'>
               <img src="/Ellipse 9.png" className='absolute -right-2 top-1' />
