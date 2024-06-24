@@ -19,25 +19,30 @@ export default function App() {
   // Función para alternar la apertura de configuraciones
   const toggleSettings = () => {
     setIsSettingsOpen((temp) => !temp);
-    if(isSettingsOpen){
-      readMessage("Ajustes de accesibilidad abierto")
-    }else{
-      readMessage("Ajustes de accesibilidad cerrado")
+    if (isSettingsOpen) {
+      readMessage("Ajustes de accesibilidad cerrado");
+    } else {
+      readMessage("Ajustes de accesibilidad abierto");
     }
   };
 
   // Función para alternar el lector de accesibilidad
   const toggleAccessibility = () => {
     setIsAccessibilityActive((active) => !active); // Cambia el estado de accesibilidad
-    if (!isAccessibilityActive) {
-      setIsMuted(false); // Si activamos la accesibilidad, desmutear
-    } else {
-      setIsMuted(true); // Si desactivamos la accesibilidad, mutear
+
+    // Determinar el mensaje correcto según el estado de accesibilidad y mute
+    const message = !isAccessibilityActive ? "Lector activado." : "Lector desactivado.";
+
+    // Leer el mensaje si no está muteado y se activa la accesibilidad
+    if (!isMuted && !isAccessibilityActive) {
+      speak({ text: message });
     }
-    const message = isAccessibilityActive
-      ? "Lector de accesibilidad desactivado."
-      : "Lector de accesibilidad activado.";
-    readMessage(message); // Lee el mensaje correspondiente
+
+    // Actualizar el estado de mute según el estado de accesibilidad
+    setIsMuted(isAccessibilityActive);
+
+    // También podrías querer mostrar un mensaje visual de activación/desactivación, pero esto depende de tu diseño.
+    readMessage(message); // Esto es opcional, dependiendo de cómo desees gestionar la interfaz de usuario.
   };
 
   // Función para cambiar el tema seleccionado
@@ -178,8 +183,8 @@ export default function App() {
             }`}
           >
             {isAccessibilityActive
-              ? "Lector Accesibilidad Activado"
-              : "Lector Accesibilidad"}
+              ? "Lector Activado"
+              : "Lector Desactivado"}
           </button>
           <button onClick={toggleSettings} className="text-right mb-4 text-xl">
             &times;
@@ -250,7 +255,11 @@ export default function App() {
                 }`}
               >
                 <p>Tema base</p>
-                <img src="/tema1.png" className="w-16" alt="Tema base" />
+                <img
+                  src="/tema1.png"
+                  className="w-16"
+                  alt="Tema base"
+                />
               </div>
               <div
                 onClick={() => handleThemeChange("esmeralda")}
@@ -259,7 +268,11 @@ export default function App() {
                 }`}
               >
                 <p>Tema esmeralda</p>
-                <img src="/tema2.png" className="w-16" alt="Tema esmeralda" />
+                <img
+                  src="/tema2.png"
+                  className="w-16"
+                  alt="Tema esmeralda"
+                />
               </div>
               <div
                 onClick={() => handleThemeChange("atardecer")}
@@ -268,7 +281,11 @@ export default function App() {
                 }`}
               >
                 <p>Tema atardecer</p>
-                <img src="/tema3.png" className="w-16" alt="Tema atardecer" />
+                <img
+                  src="/tema3.png"
+                  className="w-16"
+                  alt="Tema atardecer"
+                />
               </div>
             </div>
           </div>
