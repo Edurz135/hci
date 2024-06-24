@@ -1,25 +1,87 @@
-import {
-  createBrowserRouter,
-  RouterProvider,
-  useNavigate,
-} from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home.page";
 import Carrito from "./pages/Carrito";
 import Contacto from "./pages/Contacto";
 import Tienda from "./pages/Tienda";
-import React, { useState, useEffect } from "react";
 import AppWrapper from "./AppWrapper";
+import { useSpeechSynthesis } from "react-speech-kit";
 
 export default function App() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [fontSize, setFontSize] = useState(14); // Estado para el tamaño de fuente
-  const [contrast, setContrast] = useState(100); // Estado para el tamaño de fuente
+  const [fontSize, setFontSize] = useState(14);
+  const [contrast, setContrast] = useState(100);
   const [selectedTheme, setSelectedTheme] = useState("base");
+  const [isAccessibilityActive, setIsAccessibilityActive] = useState(false);
+  const [isMuted, setIsMuted] = useState(true); // Iniciamos como muteado
+  const { speak } = useSpeechSynthesis();
 
-  function toggleSettings() {
+  // Función para alternar la apertura de configuraciones
+  const toggleSettings = () => {
     setIsSettingsOpen((temp) => !temp);
-  }
+    if(isSettingsOpen){
+      readMessage("Ajustes de accesibilidad abierto")
+    }else{
+      readMessage("Ajustes de accesibilidad cerrado")
+    }
+  };
 
+  // Función para alternar el lector de accesibilidad
+  const toggleAccessibility = () => {
+    setIsAccessibilityActive((active) => !active); // Cambia el estado de accesibilidad
+    if (!isAccessibilityActive) {
+      setIsMuted(false); // Si activamos la accesibilidad, desmutear
+    } else {
+      setIsMuted(true); // Si desactivamos la accesibilidad, mutear
+    }
+    const message = isAccessibilityActive
+      ? "Lector de accesibilidad desactivado."
+      : "Lector de accesibilidad activado.";
+    readMessage(message); // Lee el mensaje correspondiente
+  };
+
+  // Función para cambiar el tema seleccionado
+  const handleThemeChange = (theme) => {
+    setSelectedTheme(theme);
+    readMessage(`Tema ${theme} seleccionado.`);
+  };
+
+  // Función para aumentar el tamaño de fuente
+  const increaseFontSize = () => {
+    if (fontSize >= 20) return;
+    setFontSize((prevSize) => prevSize + 2);
+    readMessage(`Tamaño de fuente aumentado a ${fontSize + 2} puntos.`);
+  };
+
+  // Función para disminuir el tamaño de fuente
+  const decreaseFontSize = () => {
+    if (fontSize <= 8) return;
+    setFontSize((prevSize) => prevSize - 2);
+    readMessage(`Tamaño de fuente disminuido a ${fontSize - 2} puntos.`);
+  };
+
+  // Función para aumentar el contraste
+  const increaseContrast = () => {
+    if (contrast >= 200) return;
+    setContrast((prevContrast) => prevContrast + 20);
+    readMessage(`Contraste aumentado a ${(contrast + 20) / 2}.`);
+  };
+
+  // Función para disminuir el contraste
+  const decreaseContrast = () => {
+    if (contrast <= 0) return;
+    setContrast((prevContrast) => prevContrast - 20);
+    readMessage(`Contraste disminuido a ${(contrast - 20) / 2}.`);
+  };
+
+  // Función para leer un mensaje usando la síntesis de voz
+  const readMessage = (message) => {
+    if (!isMuted) {
+      speak({ text: message });
+    }
+  };
+
+  // Configuración del enrutador
   const router = createBrowserRouter([
     {
       path: "/",
@@ -59,29 +121,34 @@ export default function App() {
     },
   ]);
 
-  const handleThemeChange = (theme) => {
-    setSelectedTheme(theme);
-  };
+  // Efecto para manejar atajos de teclado
+  useEffect(() => {
+    const detectKeyDown = (e) => {
+      switch (e.key) {
+        case "1":
+          toggleSettings();
+          break;
+        case "2":
+          readMessage(
+            "Funcionalidades: Acceder a inicio: Q, Acceder a tienda: W, Acceder a contacto: E, Acceder a carrito: T"
+          );
+          break;
+        case "3":
+          readMessage(
+            "Atajos de teclado: Botón de accesibilidad: 1, Escuchar funcionalidades: 2, Escuchar atajos de teclado: 3"
+          );
+          break;
+        default:
+          break;
+      }
+    };
+    document.addEventListener("keydown", detectKeyDown, true);
+    return () => {
+      document.removeEventListener("keydown", detectKeyDown, true);
+    };
+  }, [isSettingsOpen, toggleSettings, readMessage]); // Añadimos readMessage y toggleSettings al arreglo de dependencias
 
-  const increaseFontSize = () => {
-    if (fontSize >= 20) return;
-    setFontSize((prevSize) => prevSize + 2); // Incrementa el tamaño de fuente en 2 unidades
-  };
-
-  const decreaseFontSize = () => {
-    if (fontSize <= 8) return;
-    setFontSize((prevSize) => prevSize - 2); // Decrementa el tamaño de fuente en 2 unidades, con un límite mínimo de 10
-  };
-
-  const increaseContrast = () => {
-    if (contrast >= 200) return;
-    setContrast((prevContrast) => prevContrast + 20); // Incrementa el tamaño de fuente en 2 unidades
-  };
-
-  const decreaseContrast = () => {
-    if (contrast <= 0) return;
-    setContrast((prevContrast) => prevContrast - 20); // Decrementa el tamaño de fuente en 2 unidades, con un límite mínimo de 10
-  };
+  // Renderizado del componente
   return (
     <div style={{ fontSize: `${fontSize}px` }}>
       <RouterProvider router={router}></RouterProvider>
@@ -101,13 +168,34 @@ export default function App() {
       {/* Modal de configuraciones */}
       {isSettingsOpen && (
         <div className="fixed top-28 right-4 w-1/3 h-[80vh] bg-white shadow-lg p-6 overflow-y-auto transform">
+          {/* Botón de lector de accesibilidad */}
+          <button
+            onClick={toggleAccessibility}
+            className={`absolute top-3 right-4 w-40 py-2 rounded-lg shadow-lg focus:outline-none ${
+              isAccessibilityActive
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200 text-black"
+            }`}
+          >
+            {isAccessibilityActive
+              ? "Lector Accesibilidad Activado"
+              : "Lector Accesibilidad"}
+          </button>
           <button onClick={toggleSettings} className="text-right mb-4 text-xl">
             &times;
           </button>
           <h2 className="text-2xl font-bold mb-4 text-center">
             Ajustes de accesibilidad
           </h2>
-          <button className="mb-4 bg-gray-200 p-2 rounded mx-auto block">
+          <button
+            className="mb-4 bg-gray-200 p-2 rounded mx-auto block"
+            onClick={() => {
+              setFontSize(14);
+              setContrast(100);
+              setSelectedTheme("base");
+              readMessage("Ajustes reiniciados a los valores por defecto.");
+            }}
+          >
             REINICIAR AJUSTES
           </button>
           <div className="mb-4 text-center">
@@ -121,7 +209,7 @@ export default function App() {
               >
                 -
               </button>
-              {fontSize == 14
+              {fontSize === 14
                 ? "Tamaño por defecto"
                 : `Tamaño: ${fontSize} puntos`}
               <button
@@ -141,7 +229,7 @@ export default function App() {
               >
                 -
               </button>
-              {contrast == 100
+              {contrast === 100
                 ? "Contraste por defecto"
                 : `Contraste: ${contrast / 2} `}
               <button
