@@ -80,7 +80,7 @@ export default function Navbar() {
   {
     id: 1,
     nombre: "Pepe",
-    apellido: "Grillo",
+    apellido: "",
     correo: "pepegrillo@gmail.com",
     edad: "19",
     numTarjeta: "3093232123412231",
