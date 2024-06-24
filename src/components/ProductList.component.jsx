@@ -52,7 +52,7 @@ const ProductList = (props) => {
                 />
               </div>
               <div className="p-4 bg-gray-100">
-                <h4 className="text-xl font-bold text-gray-800">
+                <h4 className="font-bold text-gray-800">
                   {product.name}
                 </h4>
                 <p className="text-gray-600">{product.description}</p>
