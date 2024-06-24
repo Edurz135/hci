@@ -51,8 +51,8 @@ export default function Home(props) {
       </div>
       <div className="container bg-white mx-auto px-4 pt-16 pb-8">
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-gray-800">TENEMOS</h2>
-          <p className="text-xl text-gray-800 mt-2">
+          <h2 className="font-bold text-gray-800" style={{ fontSize: `calc(8pt + ${props.fontSize}pt)` }}>TENEMOS</h2>
+          <p className="text-gray-800 mt-2" style={{ fontSize: `calc(${props.fontSize}pt)` }}>
             Los mejores productos de simulación y experiencia virtual para ti
           </p>
         </div>
