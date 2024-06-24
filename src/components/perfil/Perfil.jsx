@@ -13,7 +13,7 @@ export default function Perfil(props) {
   return (
     <div className="perfil bg-slate-400 p-4 text-center absolute right-12">
       <span onClick={() => onClose()}>
-        <img src="/cerrar.png" className='absolute top-4 left-4 w-5' />
+        <img src="/cerrar.png" className='absolute top-4 left-4 w-5  cursor-pointer' />
       </span>
       <div className="py-8 flex items-center justify-between">
         <p className='uppercase pl-10'>Hola {User.nombre}!</p>
