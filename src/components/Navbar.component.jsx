@@ -124,12 +124,12 @@ export default function Navbar() {
           <div className="text-xl font-semibold text-black">
             {User ? (
               <>
-                <a onClick={handlePerfilClick} className="cursor-pointer">
+                <span onClick={handlePerfilClick} className="cursor-pointer">
                   <div className='flex flex-row items-center space-x-2'>
                     <img className="rounded-full w-16" src={User.foto === "" ? "/default-perfil.png" : User.foto} alt="User profile" />
                     <p className='font-semibold'>{User.nombre} {User.apellido}</p>
                   </div>
-                </a>
+                </span>
                 {showPerfil && <Perfil User={User} onClose={handleClosePerfil} />}
               </>
             ) : (
@@ -140,9 +140,9 @@ export default function Navbar() {
           </div>
           <a href="/carrito">
             <div className='relative'>
-              <img src="/Ellipse 9.png" className='absolute -right-2 top-1' />
+              <img src="/Ellipse 9.png" className='absolute -right-2 top-1' alt="pendiente"/>
               <p className='absolute -right-0.5 top-1 font-semibold'>{carrito.filter(item => item.estado === "Pendiente").length === 0 ? 0 : carrito.filter(item => item.estado === "Pendiente").length}</p>
-              <img src="/Shopping Cart.png" />
+              <img src="/Shopping Cart.png" alt="Carrito de compras"/>
             </div>
           </a>
         </div>
