@@ -14,8 +14,9 @@ export default function App() {
   const [selectedTheme, setSelectedTheme] = useState("base");
   const [isAccessibilityActive, setIsAccessibilityActive] = useState(false);
   const [isMuted, setIsMuted] = useState(true); // Iniciamos como muteado
-  const { speak } = useSpeechSynthesis();
-
+  // const { speak } = useSpeechSynthesis();
+  const { speak, voices } = useSpeechSynthesis();
+  
   // Función para alternar la apertura de configuraciones
   const toggleSettings = () => {
     setIsSettingsOpen((temp) => !temp);
@@ -79,12 +80,20 @@ export default function App() {
     readMessage(`Contraste disminuido a ${(contrast - 20) / 2}.`);
   };
 
-  // Función para leer un mensaje usando la síntesis de voz
+  const spanishVoice = voices.find((voice) => voice.lang.startsWith("es"));
+
   const readMessage = (message) => {
-    if (!isMuted) {
-      speak({ text: message });
+    if (!isMuted && spanishVoice) {
+      speak({ text: message, voice: spanishVoice });
     }
   };
+
+  // Función para leer un mensaje usando la síntesis de voz
+  // const readMessage = (message) => {
+  //   if (!isMuted) {
+  //     speak({ text: message });
+  //   }
+  // };
 
   // Configuración del enrutador
   const router = createBrowserRouter([
