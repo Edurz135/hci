@@ -7,7 +7,46 @@ import { useState } from "react";
 export default function Tienda(props) {
   return (
     <div>
-      Hola mundo Tienda
+      <Navbar />
+      Tienda
+      <br />
+      Tienda
+      <br />
+      Tienda
+      <br />
+      Tienda
+      <br />
+      Tienda
+      <br />
+      Tienda
+      <br />
+      Tienda
+      <br />
+      Tienda
+      <br />
+      Tienda
+      <br />
+      Tienda
+      <br />
+      Tienda
+      <br />
+      Tienda
+      <br />
+      Tienda
+      <br />
+      Tienda
+      <br />
+      Tienda
+      <br />
+      Tienda
+      <br />
+      Tienda
+      <br />
+      Tienda
+      <br />
+      Tienda
+      <br />
+      <Footer />
     </div>
   );
 }

@@ -118,7 +118,7 @@ export default function Navbar() {
           </Search>
         </div>
         <div className="flex items-center space-x-10 ">
-          <a href="/store" className="text-xl font-semibold text-black">
+          <a href="/Tienda" className="text-xl font-semibold text-black">
             Tienda
           </a>
           <div className="text-xl font-semibold text-black">

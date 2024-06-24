@@ -7,7 +7,46 @@ import { useState } from "react";
 export default function Contacto(props) {
   return (
     <div>
-      Hola mundo Contacto
+      <Navbar />
+      Contacto
+      <br/>
+      Contacto
+      <br/>
+      Contacto
+      <br/>
+      Contacto
+      <br/>
+      Contacto
+      <br/>
+      Contacto
+      <br/>
+      Contacto
+      <br/>
+      Contacto
+      <br/>
+      Contacto
+      <br/>
+      Contacto
+      <br/>
+      Contacto
+      <br/>
+      Contacto
+      <br/>
+      Contacto
+      <br/>
+      Contacto
+      <br/>
+      Contacto
+      <br/>
+      Contacto
+      <br/>
+      Contacto
+      <br/>
+      Contacto
+      <br/>
+      Contacto
+      <br/>
+      <Footer />
     </div>
   );
 }

@@ -1,10 +1,14 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  useNavigate,
+} from "react-router-dom";
 import Home from "./pages/Home.page";
 import Carrito from "./pages/Carrito";
 import Contacto from "./pages/Contacto";
 import Tienda from "./pages/Tienda";
-import React, { useState, useEffect } from 'react';
-
+import React, { useState, useEffect } from "react";
+import AppWrapper from "./AppWrapper";
 
 export default function App() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -12,76 +16,48 @@ export default function App() {
   const [contrast, setContrast] = useState(100); // Estado para el tamaño de fuente
   const [selectedTheme, setSelectedTheme] = useState("base");
 
+  function toggleSettings() {
+    setIsSettingsOpen((temp) => !temp);
+  }
+
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Home fontSize={fontSize} contrast={contrast}/>,
+      element: (
+        <AppWrapper
+          toggleSettings={toggleSettings}
+          child={<Home fontSize={fontSize} contrast={contrast} />}
+        />
+      ),
     },
-  ]);
-  const router2 = createBrowserRouter([
     {
       path: "/Carrito",
-      element: <Carrito fontSize={fontSize} contrast={contrast}/>,
+      element: (
+        <AppWrapper
+          toggleSettings={toggleSettings}
+          child={<Carrito fontSize={fontSize} contrast={contrast} />}
+        />
+      ),
     },
-  ]);
-  const router3 = createBrowserRouter([
     {
       path: "/Contacto",
-      element: <Contacto fontSize={fontSize} contrast={contrast}/>,
+      element: (
+        <AppWrapper
+          toggleSettings={toggleSettings}
+          child={<Contacto fontSize={fontSize} contrast={contrast} />}
+        />
+      ),
     },
-  ]);
-  const router4 = createBrowserRouter([
     {
       path: "/Tienda",
-      element: <Tienda fontSize={fontSize} contrast={contrast}/>,
+      element: (
+        <AppWrapper
+          toggleSettings={toggleSettings}
+          child={<Tienda fontSize={fontSize} contrast={contrast} />}
+        />
+      ),
     },
   ]);
-
-  useEffect(() => {
-    document.addEventListener('keydown', detectKeyDown);
-    return () => {
-      document.removeEventListener('keydown', detectKeyDown);
-    };
-  }, []); // El array vacío [] asegura que este efecto se ejecute solo una vez al montar el componente
-  
-  const detectKeyDown = (e) => {
-    if (e.key === 'Q' && e.altKey) {
-      // Acceder a inicio
-      // Simular clic en el botón de inicio
-      console.log('Acceder a inicio');
-      // Implementa la acción necesaria, por ejemplo:
-      // history.push('/')
-    } else if (e.key === 'W' && e.altKey) {
-      // Acceder a tienda
-      console.log('Acceder a tienda');
-      // history.push('/Tienda')
-    } else if (e.key === 'E' && e.altKey) {
-      // Acceder a contacto
-      console.log('Acceder a contacto');
-      // history.push('/Contacto')
-    } else if (e.key === 'T' && e.altKey) {
-      // Acceder a carrito
-      console.log('Acceder a carrito');
-      // history.push('/Carrito')
-    } else if (e.key === '1' && e.altKey) {
-      // Botón de accesibilidad
-      console.log('Botón de accesibilidad');
-      toggleSettings();
-    } else if (e.key === '2' && e.altKey) {
-      // Escuchar funcionalidades
-      console.log('Escuchar funcionalidades');
-      // Implementa la acción necesaria, por ejemplo, abrir un modal de funcionalidades
-    } else if (e.key === '3' && e.altKey) {
-      // Escuchar atajos de teclado
-      console.log('Escuchar atajos de teclado');
-      // Implementa la acción necesaria, por ejemplo, abrir un modal de atajos de teclado
-    }
-  };
-  
-
-  const toggleSettings = () => {
-    setIsSettingsOpen(!isSettingsOpen);
-  };
 
   const handleThemeChange = (theme) => {
     setSelectedTheme(theme);
@@ -108,7 +84,8 @@ export default function App() {
   };
   return (
     <div style={{ fontSize: `${fontSize}px` }}>
-      <RouterProvider router={router} />
+      <RouterProvider router={router}></RouterProvider>
+
       {/* Botón flotante */}
       <button
         onClick={toggleSettings}
@@ -166,7 +143,7 @@ export default function App() {
               </button>
               {contrast == 100
                 ? "Contraste por defecto"
-                : `Contraste: ${contrast/2} `}
+                : `Contraste: ${contrast / 2} `}
               <button
                 onClick={increaseContrast}
                 className="ml-2 bg-gray-200 p-2 rounded"
@@ -214,18 +191,18 @@ export default function App() {
             <h4 className="font-semibold">Funcionalidades</h4>
             <div className="bg-gray-200 p-4 rounded">
               <ul className="text-left">
-                <li>Acceder a inicio: TAB + Q</li>
-                <li>Acceder a tienda: TAB + W</li>
-                <li>Acceder a contacto: TAB + E</li>
-                <li>Acceder a carrito: TAB + T</li>
+                <li>Acceder a inicio: SHIFT + Q</li>
+                <li>Acceder a tienda: SHIFT + W</li>
+                <li>Acceder a contacto: SHIFT + E</li>
+                <li>Acceder a carrito: SHIFT + R</li>
               </ul>
             </div>
             <h4 className="font-semibold mt-4">Accesibilidad</h4>
             <div className="bg-gray-200 p-4 rounded">
               <ul className="text-left">
-                <li>Botón de accesibilidad: TAB + 1</li>
-                <li>Escuchar funcionalidades: TAB + 2</li>
-                <li>Escuchar atajos de teclado: TAB + 3</li>
+                <li>Botón de accesibilidad: SHIFT + 1</li>
+                <li>Escuchar funcionalidades: SHIFT + 2</li>
+                <li>Escuchar atajos de teclado: SHIFT + 3</li>
               </ul>
             </div>
           </div>

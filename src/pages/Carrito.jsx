@@ -7,7 +7,9 @@ import { useState } from "react";
 export default function Contacto(props) {
   return (
     <div>
+      <Navbar />
       Hola mundo Carrito
+      <Footer />
     </div>
   );
 }
